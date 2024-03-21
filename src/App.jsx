@@ -1,4 +1,4 @@
-import ServicesDisplay from "./components/ServicesDisplay"
+// import ServicesDisplay from "./components/ServicesDisplay"
 import AddServer from "./components/AddServer"
 import { useState } from "react"
 import { Button, Modal, Box } from "@mui/material"
@@ -34,7 +34,7 @@ const App = () => {
           <AddServer />
         </Box>
       </Modal>
-      <ServicesDisplay />
+      {/* <ServicesDisplay /> */}
       <ProcessesDisplay />
     </>
   )

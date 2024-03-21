@@ -1,16 +1,7 @@
-import * as React from 'react';
+import { useEffect, useState} from 'react';
+import {Box, Table, TableHead, TableBody, TableCell, TableContainer, TableFooter, TablePagination, TableRow, Paper, IconButton, Button } from '@mui/material'
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableFooter from '@mui/material/TableFooter';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -79,11 +70,11 @@ TablePaginationActions.propTypes = {
 
 
 export default function ProcessesDisplay() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [processes, setProcesses] = React.useState([])
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [processes, setProcesses] = useState([])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchProcesses = async () => {
         const response = await fetch('http://localhost:5500/processes')
         const data = await response.json();
@@ -107,23 +98,52 @@ export default function ProcessesDisplay() {
     setPage(0);
   };
 
+  const handleKillProcess = (e) => {
+    e.preventDefault()
+  }
+
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+      <Table sx={{ minWidth: 500 }} >
+        <TableHead sx={{ background: '#000', color: '#fff'}}>
+            <TableRow>
+              <TableCell component='th'>PID</TableCell>
+              <TableCell component='th' align="left" >Process Name</TableCell>
+              <TableCell component='th' align="left" >CPU Util</TableCell>
+              <TableCell component='th' align="left" >Memory Util</TableCell>
+              <TableCell component='th' align="left" >Status</TableCell>
+              <TableCell component='th' align="left" >Uptime</TableCell>
+              <TableCell component='th' align="left" >Action</TableCell>
+            </TableRow>
+        </TableHead>
         <TableBody>
           {(rowsPerPage > 0
             ? processes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : processes
           ).map((process) => (
             <TableRow key={process.pid}>
-              <TableCell component="th" scope="process">
+              <TableCell component="td" scope="process">
                 {process.pid}
               </TableCell>
-              <TableCell align="left">
+              <TableCell component="td" align="left">
                 {process.name}
               </TableCell>
-              <TableCell align="left">
+              <TableCell component="td" align="left">
                 {process.cpu}
+              </TableCell>
+              <TableCell component="td" align="left">
+                {process.memory}
+              </TableCell>
+              <TableCell component="td" align="left">
+                {process.status}
+              </TableCell>
+              <TableCell component="td" align="left">
+                {process.running_time}
+              </TableCell>
+              <TableCell component="td" align='left'>
+                <Button variant="contained" color="default" onClick={handleKillProcess}>
+                  Kill                  
+                </Button>
               </TableCell>
             </TableRow>
           ))}
