@@ -1,6 +1,17 @@
-import axios from 'axios'
 import { useState, useEffect } from 'react';
-import { Card, CardContent, Table, Paper, Stack, TableRow, TableBody, TableCell, TableHead, Typography, TableContainer, Container, CardHeader } from '@mui/material'
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Container from '@mui/material/Container';
+import TableContainer from '@mui/material/TableContainer';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+
+import axios from 'axios';
+
+import ServiceCard from './common/ServiceCard';
 
 const ServicesDisplay = () => {
   const [services ,setServices] = useState([])
@@ -35,48 +46,18 @@ const ServicesDisplay = () => {
         className='services-summary'
         direction='row'
         spacing={4}
-        sx={{ justifyContent: 'center', alignContent: 'center'}}
+        sx={{ display: 'flex',
+        flexDirection: 'row', 
+        justifyContent: 'space-between', alignContent: 'strech'}}
       >
-        <Card>
-          <CardHeader
-            title="Number of Online Services"
-            subheader="Server ip"
-          />
-          <CardContent>
-            <Typography variant='h4' color="secondary">
-              {active}
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader
-            title="Number of Offline Services"
-            subheader="Server ip"
-          />
-          <CardContent>
-            <Typography variant='h4' color="secondary">
-              {inactive}
-            </Typography>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader
-            title="Total Number of Services"
-            subheader="Server ip"
-          />
-          <CardContent>
-            <Typography variant='h4' color="secondary">
-              {numberOfServices}
-            </Typography>
-          </CardContent>
-        </Card>
+        <ServiceCard title='Online' detail={active} />
+        <ServiceCard title='Offline' detail={inactive}/>
+        <ServiceCard title='Total' detail={numberOfServices}/>
       </Stack>
 
     <TableContainer component={Paper} sx={{ mt: '12px' }}>
         <Table aria-label="services-table" sx={{ alignContent: 'center', margin: 'auto' }}>
-          <TableHead sx={{ background: '#111'}}>
+          <TableHead sx={{background: '#f70a35'}}>
             <TableRow>
               <TableCell sx={{ color: '#fff' }}>Service Name</TableCell>
               <TableCell align="left" sx={{ color: '#fff' }}>Number of Instances</TableCell>

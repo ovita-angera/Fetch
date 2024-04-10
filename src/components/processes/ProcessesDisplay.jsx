@@ -1,11 +1,24 @@
-import { useEffect, useState} from 'react';
-import {Box, Table, TableHead, TableBody, TableCell, TableContainer, TableFooter, TablePagination, TableRow, Paper, IconButton, Button } from '@mui/material'
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableFooter from '@mui/material/TableFooter';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import Button from "@mui/material/Button";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -68,24 +81,25 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-
 export default function ProcessesDisplay() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
   const [processes, setProcesses] = useState([])
 
   useEffect(() => {
     const fetchProcesses = async () => {
-        const response = await fetch('http://localhost:5500/processes')
-        const data = await response.json();
-        setProcesses(data)
-        console.log(data)
+      const url = 'http://localhost:5500/processes';
+      const response = await axios.get(url);
+      const data = response.data;
+
+      setProcesses(data)
     }
 
     fetchProcesses()
   }, [])
 
-  // Avoid a layout jump when reaching the last page with empty processes.
+  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - processes.length) : 0;
 
@@ -98,23 +112,36 @@ export default function ProcessesDisplay() {
     setPage(0);
   };
 
-  const handleKillProcess = (e) => {
-    e.preventDefault()
-  }
+  // const handleClick = (e) => {
+  //   e.preventDefault()
+  // };
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} >
-        <TableHead sx={{ background: '#000', color: '#fff'}}>
-            <TableRow>
-              <TableCell component='th'>PID</TableCell>
-              <TableCell component='th' align="left" >Process Name</TableCell>
-              <TableCell component='th' align="left" >CPU Util</TableCell>
-              <TableCell component='th' align="left" >Memory Util</TableCell>
-              <TableCell component='th' align="left" >Status</TableCell>
-              <TableCell component='th' align="left" >Uptime</TableCell>
-              <TableCell component='th' align="left" >Action</TableCell>
-            </TableRow>
+      <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+        <TableHead sx={{background: '#f70a35'}}>
+          <TableCell component="th" align="left" scope='row' sx={{color: '#fff'}}>
+            Process ID
+          </TableCell>
+          <TableCell component="th" align="left" sx={{color: '#fff'}}>
+            Process Name
+          </TableCell>
+          <TableCell component="th" align="left" sx={{color: '#fff'}}>
+            CPU Util
+          </TableCell>
+          <TableCell component="th" align="left" sx={{color: '#fff'}}>
+            Memory Util
+          </TableCell>
+          <TableCell component="th" align="left" sx={{color: '#fff'}}>
+            Status
+          </TableCell>
+          <TableCell component="th" align="left" sx={{color: '#fff'}}>
+            Running Time
+          </TableCell>
+          <TableCell component="th" align="left" sx={{color: '#fff'}}>
+            Action
+          </TableCell>
+
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
@@ -122,27 +149,15 @@ export default function ProcessesDisplay() {
             : processes
           ).map((process) => (
             <TableRow key={process.pid}>
-              <TableCell component="td" scope="process">
-                {process.pid}
-              </TableCell>
-              <TableCell component="td" align="left">
-                {process.name}
-              </TableCell>
-              <TableCell component="td" align="left">
-                {process.cpu}
-              </TableCell>
-              <TableCell component="td" align="left">
-                {process.memory}
-              </TableCell>
-              <TableCell component="td" align="left">
-                {process.status}
-              </TableCell>
-              <TableCell component="td" align="left">
-                {process.running_time}
-              </TableCell>
-              <TableCell component="td" align='left'>
-                <Button variant="contained" color="default" onClick={handleKillProcess}>
-                  Kill                  
+              <TableCell component="td" scope="row">{process.pid}</TableCell>
+              <TableCell align="left">{process.name}</TableCell>
+              <TableCell align="left">{process.cpu}</TableCell>
+              <TableCell align="left">{process.memory}</TableCell>
+              <TableCell align="left">{process.status}</TableCell>
+              <TableCell align="left">{process.running_time}</TableCell>
+              <TableCell align="left">
+                <Button variant='contained' sx={{background: '#fa0532'}}>
+                  Kill
                 </Button>
               </TableCell>
             </TableRow>
@@ -164,7 +179,7 @@ export default function ProcessesDisplay() {
               slotProps={{
                 select: {
                   inputProps: {
-                    'aria-label': 'processes per page',
+                    'aria-label': 'rows per page',
                   },
                   native: true,
                 },

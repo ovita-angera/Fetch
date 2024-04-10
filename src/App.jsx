@@ -1,9 +1,13 @@
-// import ServicesDisplay from "./components/ServicesDisplay"
-import AddServer from "./components/AddServer"
-import { useState } from "react"
-import { Button, Modal, Box } from "@mui/material"
+import { useState } from "react";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+
+import AddServer from "./components/servers/AddServer";
+import ServicesDisplay from "./components/services/ServicesDisplay";
+import ProcessesDisplay from "./components/processes/ProcessesDisplay";
+
 import './App.css'
-import ProcessesDisplay from "./components/ProcessesDisplay"
 
 
 const App = () => {
@@ -15,7 +19,10 @@ const App = () => {
     <>
       <Button
       variant="contained" 
-      onClick={handleOpen}>Add</Button>
+      onClick={handleOpen}
+      >
+        Add
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -34,7 +41,7 @@ const App = () => {
           <AddServer />
         </Box>
       </Modal>
-      {/* <ServicesDisplay /> */}
+      <ServicesDisplay />
       <ProcessesDisplay />
     </>
   )
