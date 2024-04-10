@@ -13,6 +13,8 @@ import axios from 'axios';
 
 import ServiceCard from './common/ServiceCard';
 
+import { HiArrowCircleUp, HiArrowCircleDown, HiOutlineDotsVertical } from "react-icons/hi";
+
 const ServicesDisplay = () => {
   const [services ,setServices] = useState([])
   const [active, setActive] = useState(0)
@@ -50,9 +52,9 @@ const ServicesDisplay = () => {
         flexDirection: 'row', 
         justifyContent: 'space-between', alignContent: 'strech'}}
       >
-        <ServiceCard title='Online' detail={active} />
-        <ServiceCard title='Offline' detail={inactive}/>
-        <ServiceCard title='Total' detail={numberOfServices}/>
+        <ServiceCard title='Online' detail={active} icon={<HiArrowCircleUp />} color='#54f542'/>
+        <ServiceCard title='Offline' detail={inactive} icon={<HiArrowCircleDown />} color='#fa4848'/>
+        <ServiceCard title='Total' detail={numberOfServices} icon={<HiOutlineDotsVertical />} color='#48e8fa'/>
       </Stack>
 
     <TableContainer component={Paper} sx={{ mt: '12px' }}>

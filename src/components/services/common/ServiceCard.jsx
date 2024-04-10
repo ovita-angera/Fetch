@@ -3,13 +3,15 @@ import './css/styles.css'
 
 const ServiceCard = ({ title, icon, detail, color }) => {
   return (
-    <div className="main-container">
-        <div className="title-container" style={{color: `${color}`}}>
-            {icon}
-            <h4>{title}</h4>
-        </div>
-        <div className="detail-container">
-            Number: {detail}
+    <div className="main-container" style={{border: `3px outset ${color}`, maxWidth: '30%', position: 'relative'}}>
+        <div style={{position: 'inherit'}}>
+            <div className="title-container" style={{color: `${color}`, border: `3px outset ${color}`}}>
+                {icon}
+                <h4>{title}</h4>
+            </div>
+            <div className="detail-container" style={{color: `${color}`}}>
+                Count: {detail}
+            </div>
         </div>
     </div>
   )
