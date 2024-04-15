@@ -88,12 +88,14 @@ export default function ProcessesDisplay() {
   const [processes, setProcesses] = useState([])
 
   useEffect(() => {
-    const fetchProcesses = async () => {
-      const url = 'http://localhost:5500/processes';
+    const fetchProcesses = async () => { 
+      const url = "http://52.15.152.26:1818/api/v1/processes/52.15.152.26"
+    
       const response = await axios.get(url);
-      const data = response.data;
+      const data = response["data"].entity;
+      console.log(data);
 
-      setProcesses(data)
+      setProcesses(data);
     }
 
     fetchProcesses()

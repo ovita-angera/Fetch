@@ -4,7 +4,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
 import AddServer from "./components/servers/AddServer";
-import ServicesDisplay from "./components/services/ServicesDisplay";
+// import ServicesDisplay from "./components/services/ServicesDisplay";
 import ProcessesDisplay from "./components/processes/ProcessesDisplay";
 
 import './App.css'
@@ -13,7 +13,7 @@ import './App.css'
 const App = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => setOpen(false); 
 
   return (
     <>
@@ -41,7 +41,7 @@ const App = () => {
           <AddServer />
         </Box>
       </Modal>
-      <ServicesDisplay />
+      {/* <ServicesDisplay /> */}
       <ProcessesDisplay />
     </>
   )

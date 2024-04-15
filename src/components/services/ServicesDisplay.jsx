@@ -26,7 +26,7 @@ const ServicesDisplay = () => {
 
   useEffect(() => {
     const fetchServices = async () => {
-      const response = await axios.get(`http://localhost:5500/services`);
+      const response = await axios.get(`http://192.168.91.247:8008/api/v1/services/3.130.157.173`);
       const service_data = response.data;
 
       const online = service_data.filter(isActive).length;
