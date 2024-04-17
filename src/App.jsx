@@ -4,7 +4,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
 import AddServer from "./components/servers/AddServer";
-// import ServicesDisplay from "./components/services/ServicesDisplay";
+import ServicesDisplay from "./components/services/ServicesDisplay";
 import ProcessesDisplay from "./components/processes/ProcessesDisplay";
 
 import './App.css'
@@ -41,7 +41,8 @@ const App = () => {
           <AddServer />
         </Box>
       </Modal>
-      {/* <ServicesDisplay /> */}
+      <ServicesDisplay />
+      <br />
       <ProcessesDisplay />
     </>
   )

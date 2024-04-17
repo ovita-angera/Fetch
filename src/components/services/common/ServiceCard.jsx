@@ -1,35 +1,44 @@
 import PropTypes from 'prop-types';
-import './css/styles.css'
+import './css/styles.css';
 
-const ServiceCard = ({ title, icon, detail, color }) => {
+import Card from "@mui/material/Card"
+import Box from "@mui/material/Box"
+import { CardContent, Container, Typography } from '@mui/material';
+
+
+const ServiceCard = ({ title, icon, detail }) => {
   return (
-    <div className="main-container" style={{border: `3px outset ${color}`, maxWidth: '30%', position: 'relative'}}>
-        <div style={{position: 'inherit'}}>
-            <div className="title-container" style={{color: `${color}`, border: `3px outset ${color}`}}>
-                {icon}
-                <h4>{title}</h4>
-            </div>
-            <div className="detail-container" style={{color: `${color}`}}>
-                Count: {detail}
-            </div>
-        </div>
-    </div>
+    <Box sx={{ maxWidth: '30%' }}>
+        <Card>
+            <CardContent display={'flex'} flexDirection={'row'}>
+                <Container display={'flex'} flexDirection={'column'} gap={2}>
+                    {icon}
+                    <Typography variant='h3'>
+                        {title}
+                    </Typography>
+                </Container>
+                <Container>
+                    <Typography>
+                        {detail}
+                    </Typography>
+                </Container>
+            </CardContent>
+        </Card>
+    </Box>
   )
 }
 
 ServiceCard.defaultProps = {
     title: 'Enter title',
     icon: null,
-    detail: 'Enter details here',
-    color: '#555'
+    detail: 'Enter details here'
 }
 
 
 ServiceCard.propTypes = {
     title: PropTypes.string.isRequired,
     icon: PropTypes.element.isRequired,
-    detail: PropTypes.number.isRequired,
-    color: PropTypes.string.isRequired
+    detail: PropTypes.number.isRequired
 }
 
 export default ServiceCard

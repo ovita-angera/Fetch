@@ -26,7 +26,7 @@ const ServicesDisplay = () => {
 
   useEffect(() => {
     const fetchServices = async () => {
-      const response = await axios.get(`http://192.168.91.247:8008/api/v1/services/3.130.157.173`);
+      const response = await axios.get("http://localhost:5500/services");
       const service_data = response.data;
 
       const online = service_data.filter(isActive).length;
@@ -50,11 +50,11 @@ const ServicesDisplay = () => {
         spacing={4}
         sx={{ display: 'flex',
         flexDirection: 'row', 
-        justifyContent: 'space-between', alignContent: 'strech'}}
+        justifyContent: 'space-around', alignContent: 'strech'}}
       >
-        <ServiceCard title='Online' detail={active} icon={<HiArrowCircleUp />} color='#54f542'/>
-        <ServiceCard title='Offline' detail={inactive} icon={<HiArrowCircleDown />} color='#fa4848'/>
-        <ServiceCard title='Total' detail={numberOfServices} icon={<HiOutlineDotsVertical />} color='#48e8fa'/>
+        <ServiceCard title='Online' detail={active} icon={<HiArrowCircleUp />} />
+        <ServiceCard title='Offline' detail={inactive} icon={<HiArrowCircleDown />} />
+        <ServiceCard title='Total' detail={numberOfServices} icon={<HiOutlineDotsVertical />} />
       </Stack>
 
     <TableContainer component={Paper} sx={{ mt: '12px' }}>

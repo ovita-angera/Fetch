@@ -89,11 +89,10 @@ export default function ProcessesDisplay() {
 
   useEffect(() => {
     const fetchProcesses = async () => { 
-      const url = "http://52.15.152.26:1818/api/v1/processes/52.15.152.26"
+      const url = "http://localhost:5500/processes"
     
       const response = await axios.get(url);
-      const data = response["data"].entity;
-      console.log(data);
+      const data = response.data;
 
       setProcesses(data);
     }
@@ -159,7 +158,7 @@ export default function ProcessesDisplay() {
               <TableCell align="left">{process.running_time}</TableCell>
               <TableCell align="left">
                 <Button variant='contained' sx={{background: '#fa0532'}}>
-                  Kill
+                  Kill Process
                 </Button>
               </TableCell>
             </TableRow>
