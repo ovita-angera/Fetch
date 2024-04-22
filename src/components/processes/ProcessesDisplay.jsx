@@ -17,6 +17,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -82,6 +83,7 @@ TablePaginationActions.propTypes = {
 };
 
 export default function ProcessesDisplay() {
+  const [search, setSearch] = useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -119,6 +121,7 @@ export default function ProcessesDisplay() {
 
   return (
     <TableContainer component={Paper}>
+      <TextField placeholder='Search' onChange={(event) => setSearch(event.target.value)}/>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead sx={{background: '#f70a35'}}>
           <TableCell component="th" align="left" scope='row' sx={{color: '#fff'}}>
@@ -148,7 +151,14 @@ export default function ProcessesDisplay() {
           {(rowsPerPage > 0
             ? processes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : processes
-          ).map((process) => (
+          ).filter(
+            (row) => 
+              !search.length || row.name
+              .toString()
+              .toLowerCase()
+              .includes(search.toString().toLowerCase())
+          ).
+          map((process) => (
             <TableRow key={process.pid}>
               <TableCell component="td" scope="row">{process.pid}</TableCell>
               <TableCell align="left">{process.name}</TableCell>

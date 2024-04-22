@@ -1,58 +1,50 @@
 import { useState } from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
-import createTheme from '@mui/material/styles/createTheme';
 
-import Box from '@mui/material/Box';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { Box, Grid, Avatar, Button, Select, MenuItem, TextField, Container, Typography, CssBaseline } from '@mui/material'
+import axios from 'axios';
+
 const defaultTheme = createTheme();
 
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
+
 export default function AddServer() {
-    const [username, setUsername] = useState('')
-    const [hostname, setHostname] = useState('')
-    const [ip, setIp] = useState('')
-    const [password, setPassword] = useState('')
-    const [os, setOs] = useState('')
-    const [status, setStatus] = useState('')
-    const [type, setType] = useState('')
+  const [file, setFile] = useState(null);
+  const [auth, setAuth] = useState('password');
 
-    const handleSubmit = (event) => { 
-      event.preventDefault()
+  const handleSubmit = (event) => { 
+    event.preventDefault()
 
-      const payload = {
-        hostname,
-        username,
-        'ip-address': ip,
-        password,
-        'operating-system': os,
-        status,
-        'server-type': type
-      };
+    const server_data = new FormData(event.currentTarget);
+    const server_data_json = Object.fromEntries(server_data);
+    const value = auth !== "password" ? file : ""
+    const payload = {...server_data_json, "auth_type": auth, "auth": value}
 
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      };
+    axios.post(``, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
 
-      fetch('http://localhost:5500/servers', options)
-      .then((res) => {
-        if (!res.ok) throw Error('Something went wrong')
-        window.alert('Server added successfully!')
-      })
-      .catch((error) => alert(error.message))
-    };
+    console.log(payload);
+
+    // reset the form
+    event.target.reset();
+    
+  };
 
 
   return (
@@ -68,127 +60,132 @@ export default function AddServer() {
             marginBottom: 5
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: '#000'  }}>
+          <Avatar sx={{ m: 1, bgcolor: '#000'}}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Server Configuration
           </Typography>
-          <form 
-          onSubmit={handleSubmit} 
-          style={{
-            marginTop: 3,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'stretch',
-            gap: '6px',
-            justifyContent: 'stretch'
-          }}
-          >
-            <FormControl>
-              <TextField
-                name="hostname"
-                required
-                fullWidth
-                id="hostname"
-                label="Hostname"
-                value={hostname}
-                onChange={(e) => setHostname(e.target.value)}
-                autoFocus
-              />
-            </FormControl>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }} >
+            <Grid container spacing={2}>
 
-            <FormControl>
-              <TextField
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </FormControl>
-        
-            <FormControl>
-              <TextField
-                required
-                fullWidth
-                id="ip-address"
-                label="IP Address"
-                name="ip-address"
-                value={ip}
-                onChange={(e) => setIp(e.target.value)}
-              />
-            </FormControl>
-            
-            <FormControl>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </FormControl>
-            
-            <FormControl>
-              <TextField
-                required
-                fullWidth
-                name="operating-system"
-                label="Operating System"
-                id="os"
-                value={os}
-                onChange={(e) => setOs(e.target.value)}
-              />
-            </FormControl>        
-          
-            <FormControl>
-              <TextField
-                required
-                fullWidth
-                name="status"
-                label="Status"
-                id="status"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-              />
-            </FormControl>
-            
-            <FormControl fullWidth>
-              <InputLabel id="select-server">Type Of Server</InputLabel>
-              <Select
-                labelId="select-server"
-                id="select-server"
-                label="Type Of Server"
-                value={type}
-                onChange={(event) => {
-                  setType(event.target.value)
-                }}
-              >
-                <MenuItem value='app'>App Server</MenuItem>
-                <MenuItem value='web'>Web Server</MenuItem>
-                <MenuItem value='db'>DB Server</MenuItem>
-                <MenuItem value='file'>File Server</MenuItem>
-              </Select>
-            </FormControl>
-            
-            <FormControl>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: 'maroon' }}
-              >
-                  Add Server
-              </Button>
-            </FormControl>
-            
-          </form>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  name="hostname"
+                  required
+                  fullWidth
+                  id="hostname"
+                  label="Hostname"
+                  autoFocus
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+
+                <TextField
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Select
+                  fullWidth
+                  labelId="connType"
+                  id="connType"
+                  value={auth}
+                  label="Connection Type"
+                  onChange={(e) => setAuth(e.target.value)}
+                >
+                  <MenuItem value="password">Password</MenuItem>
+                  <MenuItem value="key">Key</MenuItem>
+                </Select>
+              </Grid>
+
+              {auth !== "password" ? (
+                <Grid item xs={12} sm={6}>
+                  <Button
+                    fullWidth
+                    component="label"
+                    variant="contained"
+                    tabIndex={-1}
+                    startIcon={<CloudUploadIcon />}
+                    onClickCapture={(event) => {
+                      setFile(event.relatedTarget.file[0])
+                    }}
+                  >
+                    Upload file
+                    <VisuallyHiddenInput type="file" />
+                  </Button>
+              </Grid>
+              ) :
+              (
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                  />
+                </Grid>
+              )}
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="ip-address"
+                  label="IP Address"
+                  name="ip-address"
+                />
+              </Grid>
+
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  name="operating-system"
+                  label="Operating System"
+                  id="os"
+                />
+              </Grid>
+
+
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="status"
+                  label="Status"
+                  id="status"
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="type"
+                  label="Type Of Server"
+                  id="type_of_server"
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2, backgroundColor: 'maroon' }}
+            >
+                Add Server
+            </Button>
+          </Box>
         </Box>
       </Container>
     </ThemeProvider>
