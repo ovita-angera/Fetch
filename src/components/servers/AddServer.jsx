@@ -25,7 +25,6 @@ export default function AddServer() {
     }
 
     console.log(payload);
-
     // axios.post("https://httpbin.org/post", payload)
     //   .then(res => {
     //     if (res.status === 201) {
@@ -39,7 +38,6 @@ export default function AddServer() {
     event.target.reset();
     
   };
-
 
   return (
     <ThemeProvider theme={defaultTheme}>

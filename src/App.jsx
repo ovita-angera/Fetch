@@ -3,12 +3,13 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
-import AddServer from "./components/servers/AddServer";
+// import AddServer from "./components/servers/AddServer";
 // import ServicesDisplay from "./components/services/ServicesDisplay";
 // import ProcessesDisplay from "./components/processes/ProcessesDisplay";
 // import { Process } from "./components/processes/Process";
 
 import './App.css'
+import FileListModal from "./components/filelist/FileListModal";
 
 
 const App = () => {
@@ -42,8 +43,9 @@ const App = () => {
            boxShadow: 24,
            borderRadius: '20px'
         }}>
-          <AddServer />
+          {/* <AddServer /> */}
           {/* <Process /> */}
+          <FileListModal />
         </Box>
       </Modal>
       {/* <ServicesDisplay /> */}
