@@ -3,12 +3,12 @@ import { useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Input ,Box, Grid, Avatar, Button, Select, MenuItem, TextField, Container, Typography, CssBaseline } from '@mui/material'
-import axios from 'axios';
+// import axios from 'axios';
 
 const defaultTheme = createTheme();
 
 export default function AddServer() {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState('');
   const [auth, setAuth] = useState('password');
 
   const handleSubmit = (event) => { 
@@ -17,29 +17,23 @@ export default function AddServer() {
     const server_data = new FormData(event.currentTarget);
     server_data.append("file", file)
     let server_data_json = Object.fromEntries(server_data);
-    server_data_json = {...server_data_json, "auth_type": auth}
 
     const payload = {
-      "hostname": server_data_json.hostname,
-      "ip_address": server_data_json.ip_address,
-      "username": server_data_json.username,
+      ...server_data_json,
       "password": server_data_json.password,
-      "operating_system": server_data_json.os,
-      "status": server_data_json.status,
-      "type": server_data_json.type,
-      "connType": server_data_json.auth_type,
-      "filename": server_data_json.file
+      "filename": server_data_json.file.name
     }
 
+    console.log(payload);
 
-    axios.post("http://192.168.88.90:8009/api/v1/server", payload)
-      .then(res => {
-        if (res.status === 201) {
-          console.log("Success");
-          console.log(res.data);
-        }
-      })
-      .catch(err => console.error(err))
+    // axios.post("https://httpbin.org/post", payload)
+    //   .then(res => {
+    //     if (res.status === 201) {
+    //       console.log("Success");
+    //       console.log(res.data);
+    //     }
+    //   })
+    //   .catch(err => console.error(err))
     
     // reset the form
     event.target.reset();
@@ -96,6 +90,7 @@ export default function AddServer() {
                   fullWidth
                   labelId="connType"
                   id="connType"
+                  name='connType'
                   value={auth}
                   label="Connection Type"
                   onChange={(e) => setAuth(e.target.value)}
@@ -106,10 +101,13 @@ export default function AddServer() {
               </Grid>
 
               {auth !== "password" ? (
-                <Grid item xs={12}>
+                <Grid item xs={12}> 
                   <Input
                   type='file'
-                  onChange={ (event) => setFile(event.target.files[0]) }
+                  onChange={ (event) => {
+                    var blob = event.target.files[0];
+                    setFile(blob)
+                  }}
                   >
                     Choose file
                   </Input>
