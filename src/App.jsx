@@ -3,10 +3,10 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
-// import AddServer from "./components/servers/AddServer";
-// import ServicesDisplay from "./components/services/ServicesDisplay";
-// import ProcessesDisplay from "./components/processes/ProcessesDisplay";
-// import { Process } from "./components/processes/Process";
+import AddServer from "./components/servers/AddServer";
+import ServicesDisplay from "./components/services/ServicesDisplay";
+import ProcessesDisplay from "./components/processes/ProcessesDisplay";
+import { Process } from "./components/processes/Process";
 
 import './App.css'
 import FileListModal from "./components/filelist/FileListModal";
@@ -29,28 +29,28 @@ const App = () => {
         open={open}
         onClose={handleClose}
         style={{
-          overflow: 'auto'
+          overflow: 'auto',
+          marginTop: '2px'
         }}
       >
         <Box sx={{
-           position: 'relative',
-           top: '50%',
-           left: '50%',
-           transform: 'translate(-50%, -50%)',
-           width: '50%',
-           bgcolor: 'background.paper',
-           border: '1px solid #000',
-           boxShadow: 24,
-           borderRadius: '20px'
+          margin: 'auto',
+          paddingTop: '2px',
+          width: '50%',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          borderRadius: '20px'
         }}>
-          {/* <AddServer /> */}
-          {/* <Process /> */}
+          <AddServer />
+          <hr />
+          <Process />
+          <hr />
           <FileListModal />
         </Box>
       </Modal>
-      {/* <ServicesDisplay /> */}
+      <ServicesDisplay />
       <br />
-      {/* <ProcessesDisplay /> */}
+      <ProcessesDisplay />
     </>
   )
 }
